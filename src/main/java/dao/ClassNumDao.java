@@ -21,29 +21,33 @@ public class ClassNumDao extends Dao {
 		Connection connection = getConnection();
 		// プリペアードステートメント
 		PreparedStatement statement = null;
+		
+		ResultSet rSet = null;
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			
-			// プリペアードステートメントに値をバインド
-			
+			statement=connection.prepareStatement(
+					"select * from class_num where class_num=? and school_cd=?");			// プリペアードステートメントに値をバインド
+			statement.setString(1, class_num);
+			statement.setString(2, school.getCd());
 			
 			// プリペアードステートメントを実行
-			
+			rSet = statement.executeQuery();
 			
 			// 学校Daoを初期化
+			List<String> list = new ArrayList<>();
 			
 
-			ResultSet rSet = null; // エラー解消のため宣言　書き換え必要
+//			ResultSet rSet = null; // エラー解消のため宣言 書き換え必要
 			if (rSet.next()) {
 				// リザルトセットが存在する場合
 				// クラス番号インスタンスに検索結果をセット
-				
-				
+				classNum.setClass_num(class_num);
+				classNum.setSchool(school);
 			} else {
 				// リザルトセットが存在しない場合
 				// クラス番号インスタンスにnullをセット
-				
+				classNum = null;
 			}
 		} catch (Exception e) {
 			throw e;
@@ -83,16 +87,18 @@ public class ClassNumDao extends Dao {
 		Connection connection = getConnection();
 		// プリペアードステートメント
 		PreparedStatement statement = null;
+		
+		ResultSet rSet = null;
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement=connection.prepareStatement("select class_num from class_num where school_cd=?");
+			statement = connection.prepareStatement("select class_num from class_num where school_cd = ?");
 			// プリペアードステートメントに学校コードをバインド
+			// １つ目の?に「school.getCd()」の値をセット
 			statement.setString(1, school.getCd());
 			// プリペアードステートメントを実行
-			ResultSet rSet=statement.executeQuery();
-
-			// ResultSet rSet = null; // エラー解消のため宣言　書き換え必要
+			rSet = statement.executeQuery();
+			
 			// リザルトセットを全件走査
 			while (rSet.next()) {
 				// リストにクラス番号を追加
@@ -139,11 +145,14 @@ public class ClassNumDao extends Dao {
 
 		try {
 			// プリペアードステートメントにINSERT文をセット
+			statement = connection.prepareStatement
+					("insert into class_num(class_num) values(?)");
 			
 			// プリペアードステートメントに値をバインド
-			
+			statement.setString(1, classNum.getClass_num());
 			
 			// プリペアードステートメントを実行
+			count = statement.executeUpdate();
 			
 		} catch (Exception e) {
 			throw e;
@@ -193,10 +202,16 @@ public class ClassNumDao extends Dao {
 
 		try {
 			// プリペアードステートメントにUPDATE文をセット
+			statement = connection.prepareStatement
+					("update class_num set class_num=? where school_cd=? and class_num=?");	
 			
-			
+			// プリペアードステートメントに値をバインド
+			statement.setString(1, newClassNum);
+			statement.setString(2, classNum.getSchool().getCd());
+			statement.setString(3, classNum.getClass_num());
 			
 			// プリペアードステートメントを実行
+			count = statement.executeUpdate();
 			
 			// プリペアードステートメントを閉じる
 			if (statement != null) {
@@ -208,9 +223,14 @@ public class ClassNumDao extends Dao {
 			}
 
 			// 登録されている学生のクラスも変更
-			
-			
-			
+			statement = connection.prepareStatement
+					("update student set class_num=? where school_cd=? and class_num=?");
+
+			statement.setString(1, newClassNum);
+			statement.setString(2, classNum.getSchool().getCd());
+			statement.setString(3, classNum.getClass_num());
+
+			count += statement.executeUpdate();
 			
 			// プリペアードステートメントを閉じる
 			if (statement != null) {
@@ -222,11 +242,14 @@ public class ClassNumDao extends Dao {
 			}
 
 			// テストに登録されているクラスも変更
-			
-			
-			
-			
-			
+			statement = connection.prepareStatement
+					("update test set class_num=? where school_cd=? and class_num=?");
+
+			statement.setString(1, newClassNum);
+			statement.setString(2, classNum.getSchool().getCd());
+			statement.setString(3, classNum.getClass_num());
+
+			count += statement.executeUpdate();
 
 		} catch (Exception e) {
 			throw e;
