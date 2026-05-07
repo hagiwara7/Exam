@@ -36,6 +36,7 @@ public class TestStudentDao extends Dao{
 		return list;
 	}
 
+	
 	public List<TestListStudent> filter(Student student) throws Exception {
 
 		// リストを初期化
