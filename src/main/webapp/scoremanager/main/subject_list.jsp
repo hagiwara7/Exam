@@ -7,8 +7,6 @@
 		得点管理システム
 	</c:param>
 
-
-
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
@@ -17,6 +15,8 @@
 			<div class="my-2 text-end px-4">
 				<a href="SubjectCreate.action">新規登録</a>
 			</div>
+			
+			<c:
 			<form method="get">
 			
 			</form>
@@ -36,8 +36,6 @@
 							</tr>
 						</c:forEach>
 					</table>
-				</c:when>
-				<c:otherwise>
 					<div>科目情報が存在しませんでした。</div>
 				</c:otherwise>
 			</c:choose>
