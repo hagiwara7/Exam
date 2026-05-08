@@ -37,7 +37,6 @@ public class SubjectListAction extends Action {
 		
 		//
 		List<Subject> list = subjectDao.filter(teacher.getSchool());
-
 		
 		// セット
 		req.setAttribute("subjects", list);
