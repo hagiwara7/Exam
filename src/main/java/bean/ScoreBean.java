@@ -57,4 +57,3 @@ public class ScoreBean {
         this.classNum = classNum;
     }
 }
-``
