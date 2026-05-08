@@ -10,16 +10,17 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
-		<section class="me=4">
+		<section class="me-4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目管理</h2>
+			
 			<div class="my-2 text-end px-4">
 				<a href="SubjectCreate.action">新規登録</a>
 			</div>
 			
-			<c:
 			<form method="get">
 			
 			</form>
+			  <c:choose>
 					<table class="table table-hover">
 						<tr>
 							<th>科目コード</th>
@@ -29,16 +30,17 @@
 						</tr>
 						<c:forEach var="subject" items="${subjects }">
 							<tr>
-								<td>${subject.subjectCode }</td>
-								<td>${subject.subjectName }</td>
+								<td>${subject.school_cd }</td>
+								<td>${subject.name }</td>
 								
 								<td><a href="SubjectUpdate.action?no=${subject.cd }">変更</a></td>
 							</tr>
 						</c:forEach>
 					</table>
+					<c:otherwise>
 					<div>科目情報が存在しませんでした。</div>
-				</c:otherwise>
-			</c:choose>
+				    </c:otherwise>
+			  </c:choose>
 		</section>
 	</c:param>
 </c:import>
