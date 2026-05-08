@@ -21,6 +21,7 @@
 			
 			</form>
 			  <c:choose>
+			      <c:when test="${not empty subjects }">
 					<table class="table table-hover">
 						<tr>
 							<th>科目コード</th>
@@ -30,13 +31,15 @@
 						</tr>
 						<c:forEach var="subject" items="${subjects }">
 							<tr>
-								<td>${subject.school_cd }</td>
+								<td>${subject.cd }</td>
 								<td>${subject.name }</td>
 								
 								<td><a href="SubjectUpdate.action?no=${subject.cd }">変更</a></td>
 							</tr>
 						</c:forEach>
 					</table>
+				  </c:when>
+				  
 					<c:otherwise>
 					<div>科目情報が存在しませんでした。</div>
 				    </c:otherwise>

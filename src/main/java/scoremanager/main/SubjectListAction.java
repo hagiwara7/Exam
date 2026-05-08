@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.Subject;
-
+import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,8 +35,12 @@ public class SubjectListAction extends Action {
 		school_cd = req.getParameter("f2");
 		name = req.getParameter("f3");
 		
+		//
+		List<Subject> list = subjectDao.filter(teacher.getSchool());
+
+		
 		// セット
-		req.setAttribute("subjects", subjects);
+		req.setAttribute("subjects", list);
 		
 		req.setAttribute("cd", cd);
 		req.setAttribute("school_cd", school_cd);
