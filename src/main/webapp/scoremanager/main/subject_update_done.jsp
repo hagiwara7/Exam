@@ -6,7 +6,7 @@
 	<c:param name="title">
 		得点管理システム
 	</c:param>
-
+ 
 	<c:param name="content">
 		<div id="wrap_box">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2">科目情報変更</h2>

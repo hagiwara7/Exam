@@ -1,7 +1,5 @@
 package bean;
 
-import javax.security.auth.Subject;
-
 public class Test {
 
     private Student student;
