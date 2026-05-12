@@ -20,7 +20,7 @@
 			<input type="hidden" name="subject_name" value="${subject.name }">
 			
 			    <div class="mx-auto py-2">
-					<input class="btn btn-primary" type="submit" name="login" value="削除"/>
+					<input class="btn btn-danger" type="submit" name="login" value="削除"/>
 				</div>
 				
 			</form>
