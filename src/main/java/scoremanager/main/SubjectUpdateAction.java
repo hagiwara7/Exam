@@ -37,12 +37,15 @@ public class SubjectUpdateAction extends Action{
 		// DBから科目コードと学校コードを使って詳細データ取得
 		subject = subjectDao.get(cd, teacher.getSchool());
 		
-		//科目変更中に変更対象が削除された際の処理
+		//変更対象が検出されなかった場合の処理
 		if (subject == null) {
+			//エラーメッセージをセット
 		    errors.put("1", "科目情報が存在しません");
 		    req.setAttribute("errors", errors);
+			
 			req.setAttribute("cd", cd);
 			req.setAttribute("name", name);
+			//jspへフォワード
 			req.getRequestDispatcher("subject_update.jsp").forward(req, res);
 		}
 		
