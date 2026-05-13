@@ -1,5 +1,8 @@
 package scoremanager.main;
- 
+
+import java.util.HashMap;
+import java.util.Map;
+
 import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDao;
@@ -19,6 +22,9 @@ public class SubjectUpdateAction extends Action{
 		// jspファイルに情報を渡す
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher)session.getAttribute("user");
+
+		Map<String, String> errors = new HashMap<>();
+		
 		String cd=""; // 科目コード
 		String name=""; // 科目名
 		Subject subject=new Subject();
@@ -32,6 +38,11 @@ public class SubjectUpdateAction extends Action{
 		name=subject.getName();
 		req.setAttribute("cd", cd);
 		req.setAttribute("name", name);
+
+		School school = teacher.getSchool();
+        if (subjectDao.get(cd, school) == null) {
+            errors.put("1", "科目が存在していません");
+        
  
 		//JSPへフォワード
 		req.getRequestDispatcher("subject_update.jsp").forward(req, res);
