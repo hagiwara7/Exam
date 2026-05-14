@@ -16,7 +16,11 @@
 					<label class="mx-auto py-2" for="cd">科目コード</label><br>
 					<input class="border border-0 ps-3" type="text" id="cd" value="${cd }" name="cd" readonly />
 				</div>
-				<div>${errors["1"]}</div>
+				<div>
+				<span class="text-warning">
+				${errors["1"]}
+				</span>
+				</div>
 				<div class="mx-auto py-2">
 					<label for="name">教科名</label><br>
 					<input class="form-control" type="text" id="name" name="name" value="${name }" required maxlength="30" />
