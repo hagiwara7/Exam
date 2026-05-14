@@ -3,6 +3,9 @@
 	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
+
+
+<!-- 科目別で得点を表示 -->
 <c:import url="/common/base.jsp">
 	<c:param name="title">
 		得点管理システム
@@ -13,7 +16,8 @@
 	<c:param name="content">
 		<section class="me-4">
 			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
-
+			
+			<!-- 「検索」ボタンを押したらTestListSubjectExecuteAction.javaに飛ぶように設定 -->
 			<form action="TestListSubjectExecute.action" method="get">
 				<div class="row border mx-3 mb-3 py-2 align-items-center rounded">
 					<div class="col-3">
@@ -58,6 +62,10 @@
 				</div>
 			</form>
 
+
+
+			<!-- 学生番号で絞る -->
+			<!-- 「検索」ボタンを押したらTestListStudentExecuteAction.javaに飛ぶように設定 -->
 			<form action="TestListStudentExecute.action" method="get">
 				<div class="row border mx-3 mb-3 py-2 align-items-center rounded">
 					<div class="col-10">
