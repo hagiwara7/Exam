@@ -170,68 +170,57 @@ public class TestDao extends Dao {
         }
     }
 
-    public void save(Test test) throws Exception {
+    private boolean save(Test test, Connection connection) throws Exception {
+        PreparedStatement statement = null;
+        int line = 0;
 
-	    Connection con = getConnection();
+        
+        // 既存のデータがあればアップデート
+        try {
+            statement = connection.prepareStatement(
+                "update test set point = ? " +
+                "where student_no = ? and subject_cd = ? and school_cd = ? and no = ?"
+            );
 
-	    // 既存確認
-	    String checkSql =
-	        "SELECT COUNT(*) FROM TEST " +
-	        "WHERE SCHOOL_CD=? AND STUDENT_NO=? " +
-	        "AND SUBJECT_CD=? AND NO=?";
+            statement.setInt(1, test.getPoint());
+            statement.setString(2, test.getStudent().getNo());
+            statement.setString(3, test.getSubject().getCd());
+            statement.setString(4, test.getSchool().getCd());
+            statement.setInt(5, test.getNo());
 
-	    PreparedStatement checkSt = con.prepareStatement(checkSql);
+            line = statement.executeUpdate();
 
-	    checkSt.setString(1, test.getSchoolCd());
-	    checkSt.setString(2, test.getStudentNo());
-	    checkSt.setString(3, test.getSubjectCd());
-	    checkSt.setInt(4, test.getNo());
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
 
-	    ResultSet rs = checkSt.executeQuery();
+        
+        // データがなかったら追加
+        if (line == 0) {
+            try {
+                statement = connection.prepareStatement(
+                    "insert into test(student_no, subject_cd, school_cd, no, point, class_num) " +
+                    "values(?, ?, ?, ?, ?, ?)"
+                );
 
-	    rs.next();
+                statement.setString(1, test.getStudent().getNo());
+                statement.setString(2, test.getSubject().getCd());
+                statement.setString(3, test.getSchool().getCd());
+                statement.setInt(4, test.getNo());
+                statement.setInt(5, test.getPoint());
+                statement.setString(6, test.getClassNum());
 
-	    int count = rs.getInt(1);
+                line = statement.executeUpdate();
 
-	    if (count == 0) {
+            } finally {
+                if (statement != null) {
+                    statement.close();
+                }
+            }
+        }
 
-	        // INSERT
-	        String insertSql =
-	            "INSERT INTO TEST(SCHOOL_CD, STUDENT_NO, SUBJECT_CD, NO, POINT,CLASS_NUM) " +
-	            "VALUES(?,?,?,?,?,?)";
-
-	        PreparedStatement st = con.prepareStatement(insertSql);
-
-	        st.setString(1, test.getSchoolCd());
-	        st.setString(2, test.getStudentNo());
-	        st.setString(3, test.getSubjectCd());
-	        st.setInt(4, test.getNo());
-	        st.setInt(5, test.getPoint());
-	        st.setString(6, test.getClassNum());
-
-	        st.executeUpdate();
-
-	    } else {
-
-	        // UPDATE
-	        String updateSql =
-	            "UPDATE TEST SET POINT=?, CLASS_NUM=? " +
-	            "WHERE SCHOOL_CD=? AND STUDENT_NO=? " +
-	            "AND SUBJECT_CD=? AND NO=?";
-
-	        PreparedStatement st = con.prepareStatement(updateSql);
-
-	        st.setInt(1, test.getPoint());
-	        st.setString(2, test.getClassNum());
-
-	        st.setString(3, test.getSchoolCd());
-	        st.setString(4, test.getStudentNo());
-	        st.setString(5, test.getSubjectCd());
-	        st.setInt(6, test.getNo());
-
-	        st.executeUpdate();
-	    }
-
-	    con.close();
-	}
+        return line == 1;
+    }
 }

@@ -34,8 +34,8 @@
 							<tr>
 								<td>${test.entYear }</td>
 								<td>${test.classNum }</td>
-								<td>${test.no }</td>
-								<td>${test.name }</td>
+								<td>${test.studentno }</td>
+								<td>${test.studentname }</td>
 								<td>${empty test.point ? '-' : test.point}</td>
 								<td>${empty test.point ? '-' : test.point}</td>
 								
