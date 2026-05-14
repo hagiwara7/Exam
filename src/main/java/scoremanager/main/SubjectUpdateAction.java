@@ -1,5 +1,8 @@
 package scoremanager.main;
- 
+
+import java.util.HashMap;
+import java.util.Map;
+
 import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDao;
@@ -19,22 +22,41 @@ public class SubjectUpdateAction extends Action{
 		// jspファイルに情報を渡す
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher)session.getAttribute("user");
+
+		Map<String, String> errors = new HashMap<>();
+		
 		String cd=""; // 科目コード
 		String name=""; // 科目名
+		
 		Subject subject=new Subject();
 		SubjectDao subjectDao=new SubjectDao();// 科目の情報をDBから取得するのに必要
+		
 		// リクエストパラメータの取得→変更対象の科目コードを取得
 		cd=req.getParameter("cd");
-		// DBから科目コードと学校コードの情報を使って科目の詳細データ取得
+		
+		// DBから科目コードと学校コードを使って詳細データ取得
 		subject = subjectDao.get(cd, teacher.getSchool());
-		// 上で定義した変数にjspに受け渡すデータを格納して
-		// リクエストスコープにセットする	
+		
+		//変更対象が検出されなかった場合の処理
+		if (subject == null) {
+			//エラーメッセージをセット
+		    errors.put("1", "科目情報が存在しません");
+		    req.setAttribute("errors", errors);
+			
+			req.setAttribute("cd", cd);
+			req.setAttribute("name", name);
+			//jspへフォワード
+			req.getRequestDispatcher("subject_update.jsp").forward(req, res);
+		}
+		
+		//取得した値をセット
+		req.setAttribute("errors", errors);
 		name=subject.getName();
 		req.setAttribute("cd", cd);
 		req.setAttribute("name", name);
- 
+
 		//JSPへフォワード
 		req.getRequestDispatcher("subject_update.jsp").forward(req, res);
 	}
- 
+
 }
