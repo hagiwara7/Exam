@@ -13,8 +13,13 @@
 
 	<c:param name="content">
 		<section class="me-4">
+<<<<<<< HEAD
 			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
+=======
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績一覧（科目）</h2>
+>>>>>>> branch 'master' of https://github.com/hagiwara7/Exam.git
 			
+<<<<<<< HEAD
 			<!-- 科目別検索 -->
 			<form action="TestListSubjectExecute.action" method="get">
 				<div class="row border mx-3 mb-3 py-2 align-items-center rounded">
