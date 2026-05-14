@@ -57,6 +57,7 @@ public class TestListStudentExecuteAction extends Action {
         req.setAttribute("f4", studentNo);
         req.setAttribute("searchType", "student");
 
+        
         if (studentNo == null || studentNo.isEmpty()) {
             errors.put("f4", "このフィールドを入力してください。");
             req.setAttribute("errors", errors);
@@ -74,13 +75,13 @@ public class TestListStudentExecuteAction extends Action {
             req.getRequestDispatcher("test_list.jsp").forward(req, res);
             return;
         }
-
+        
         List<TestListStudent> testListStudent = testListStudentDao.filter(student);
 
         req.setAttribute("student", student);
         req.setAttribute("testListStudent", testListStudent);
         req.setAttribute("errors", errors);
 
-        req.getRequestDispatcher("test_list.jsp").forward(req, res);
+        req.getRequestDispatcher("test_list_student.jsp").forward(req, res);
     }
 }

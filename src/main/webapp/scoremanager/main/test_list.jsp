@@ -80,37 +80,6 @@
 					<div class="mt-2 text-warning">${errors.get("f4")}</div>
 				</div>
 			</form>
-
-			<c:if test="${not empty student}">
-				<div class="mx-3 mb-2">
-					氏名：${student.name}（${student.no}）
-				</div>
-			</c:if>
-
-			<c:if test="${not empty testListStudent}">
-				<table class="table table-hover mx-3">
-					<tr>
-						<th>科目名</th>
-						<th>科目コード</th>
-						<th>回数</th>
-						<th>点数</th>
-					</tr>
-
-					<c:forEach var="test" items="${testListStudent}">
-						<tr>
-							<td>${test.subjectName}</td>
-							<td>${test.subjectCd}</td>
-							<td>${test.num}</td>
-							<td>${test.point}</td>
-						</tr>
-					</c:forEach>
-				</table>
-			</c:if>
-
-			<c:if test="${searchType == 'student' && empty errors && empty testListStudent}">
-				<div class="mx-3">成績情報が存在しませんでした。</div>
-			</c:if>
-
 		</section>
 	</c:param>
 </c:import>
