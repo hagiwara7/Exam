@@ -22,7 +22,7 @@
 
 				<div class="row align-items-end">
 			
-					<div class="col-2">
+					<div class="col-3">
 						<label>入学年度</label>
 						<select name="entYear" class="form-select">
 							<c:forEach var="year" items="${entYearSet}">
@@ -79,58 +79,53 @@
 
 		<c:if test="${students != null}">
 
-			<form action="TestRegistExecute.action" method="post">
-
-				<input type="hidden" name="subjectCd" value="${subjectCd}">
-				<input type="hidden" name="no" value="${no}">
-
-				<p>
-					科目：${subjectName}（${no}回）
-				</p>
-
-				<table class="table">
-
-					<tr>
-						<th>入学年度</th>
-						<th>クラス</th>
-						<th>学生番号</th>
-						<th>氏名</th>
-						<th>点数</th>
-					</tr>
-
-					<c:forEach var="student" items="${students}" varStatus="st">
-
-						<tr>
-
-							<td>${student.entYear}</td>
-							<td>${student.classNum}</td>
-							<td>
-								${student.no}
-
-								<input type="hidden"
-									name="studentNo"
-									value="${student.no}">
-							</td>
-
-							<td>${student.name}</td>
-
-							<td>
-								<input type="text"
-									name="point"
-									class="form-control"
-									value="${points[st.index]}">
-							</td>
-
-						</tr>
-
-					</c:forEach>
-
-				</table>
-
-				<button type="submit" class="btn btn-primary">
-					登録して終了
-				</button>
-
+						<form action="TestRegistExecute.action" method="post">
+			
+			    <input type="hidden" name="subjectCd" value="${subjectCd}">
+			    <input type="hidden" name="no" value="${no}">
+			    <input type="hidden" name="classNum" value="${param.classNum}">
+			    <input type="hidden" name="entYear" value="${param.entYear}">
+			    <input type="hidden" name="schoolCd" value="${schoolCd}">
+			
+			    <table class="table">
+			
+			        <tr>
+			            <th>入学年度</th>
+			            <th>クラス</th>
+			            <th>学生番号</th>
+			            <th>氏名</th>
+			            <th>点数</th>
+			        </tr>
+			
+			        <c:forEach var="student" items="${students}" varStatus="st">
+			
+			            <tr>
+			                <td>${student.entYear}</td>
+			                <td>${student.classNum}</td>
+			
+			                <td>
+			                    ${student.no}
+			                    <input type="hidden" name="student_no" value="${student.no}">
+			                </td>
+			
+			                <td>${student.name}</td>
+			
+			                <td>
+			                    <input type="text"
+			                           name="point"
+			                           class="form-control"
+			                           value="${points[st.index]}">
+			                </td>
+			            </tr>
+			
+			        </c:forEach>
+			
+			    </table>
+			
+			    <button type="submit" class="btn btn-primary">
+			        登録して終了
+			    </button>
+			
 			</form>
 
 		</c:if>

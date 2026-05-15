@@ -29,7 +29,7 @@ public class TestRegistAction extends Action {
 		String classNum = request.getParameter("classNum");
 		String subjectCd = request.getParameter("subjectCd");
 		String no = request.getParameter("no");
-
+		String schoolCd = request.getParameter(null);
 		// プルダウン用
 		request.setAttribute("entYearSet", sDao.getEntYearSet());
 		// 修正後
@@ -41,6 +41,7 @@ public class TestRegistAction extends Action {
 		request.setAttribute("classNum", classNum);
 		request.setAttribute("subjectCd", subjectCd);
 		request.setAttribute("no", no);
+		request.setAttribute("schoolCd", schoolCd);
 
 		// 条件指定時のみ検索
 		if (entYear != null &&
