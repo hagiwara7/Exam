@@ -26,7 +26,7 @@ public class TestRegistAction extends Action {
 
 		School school = new School();
 
-		school.setCd("2000");
+		school.setCd("oom");
 
 		request.getSession().setAttribute(
 		    "school",
