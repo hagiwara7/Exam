@@ -53,7 +53,9 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("f1", entYear);
 		req.setAttribute("f2", classNum);
 		req.setAttribute("f3", subjectCd);
-
+		
+		
+		// エラー対応
 		if (entYear == null || entYear.equals("0")) {
 			errors.put("f1", "入学年度を選択してください。");
 		}
