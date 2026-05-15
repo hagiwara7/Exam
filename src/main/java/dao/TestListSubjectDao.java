@@ -35,6 +35,7 @@ public class TestListSubjectDao extends Dao {
 	private List<TestListSubject> postFilter(ResultSet rs) throws Exception {
 		List<TestListSubject> list = new ArrayList<>();
 
+		
 		while (rs.next()) {
 			String studentNo = rs.getString("student_no");
 
@@ -51,13 +52,16 @@ public class TestListSubjectDao extends Dao {
 				target = new TestListSubject();
 				target.setEntYear(rs.getInt("ent_year"));
 				target.setClassNum(rs.getString("class_num"));
-				target.setStudentNo(studentNo);
+				target.setStudentNo(rs.getString("student_no"));
 				target.setStudentName(rs.getString("student_name"));
 				list.add(target);
 			}
+			
+			int no =rs.getInt("test_no");
+			int point = rs.getInt("test_point");
 
-			target.setNo(rs.getInt("no"));
-			target.setPoint(rs.getInt("point"));
+			target.getPoints().put(String.valueOf(no), point);
+			
 		}
 
 		return list;
