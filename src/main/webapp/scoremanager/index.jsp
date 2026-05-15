@@ -5,13 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
+<title>小谷野綾大です。</title>
 <script>
 //ログインページにリダイレクト
 location.href="/javaSystem_login/scoremanager/Login.action";
 </script>
-</head>
-<body>
-
-</body>
-</html>
