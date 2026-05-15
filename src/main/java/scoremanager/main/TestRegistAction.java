@@ -1,11 +1,11 @@
-// TestRegistAction.java
-
 package scoremanager.main;
 
 import java.util.List;
 
+import bean.School;
 import bean.Student;
 import bean.Subject;
+import dao.ClassNumDao;
 import dao.StudentDao;
 import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,48 +20,76 @@ public class TestRegistAction extends Action {
 			HttpServletResponse response
 	) throws Exception {
 
-		// DAO
 		StudentDao sDao = new StudentDao();
 		SubjectDao subDao = new SubjectDao();
+		ClassNumDao cDao = new ClassNumDao();
+
+		School school = new School();
+
+		school.setCd("2000");
+
+		request.getSession().setAttribute(
+		    "school",
+		    school
+		);
+		// DBからプルダウン用データ取得
+		request.setAttribute(
+				"subjectSet",
+				subDao.filter(school)
+		);
+
+		request.setAttribute(
+				"classNumSet",
+				cDao.filter(school)
+		);
+
+		request.setAttribute(
+				"entYearSet",
+				sDao.filterEntYear(school)
+		);
 
 		// パラメータ取得
 		String entYear = request.getParameter("entYear");
 		String classNum = request.getParameter("classNum");
 		String subjectCd = request.getParameter("subjectCd");
 		String no = request.getParameter("no");
-		String schoolCd = request.getParameter(null);
-		// プルダウン用
-		request.setAttribute("entYearSet", sDao.getEntYearSet());
-		// 修正後
-		request.setAttribute("classNumSet", sDao.getClassNumSet());
-		request.setAttribute("subjectSet", subDao.filter());
 
-		// 検索条件保持
 		request.setAttribute("entYear", entYear);
 		request.setAttribute("classNum", classNum);
 		request.setAttribute("subjectCd", subjectCd);
 		request.setAttribute("no", no);
-		request.setAttribute("schoolCd", schoolCd);
 
-		// 条件指定時のみ検索
+		// 検索実行
 		if (entYear != null &&
+			!entYear.isEmpty() &&
 			classNum != null &&
+			!classNum.isEmpty() &&
 			subjectCd != null &&
-			no != null) {
+			!subjectCd.isEmpty() &&
+			no != null &&
+			!no.isEmpty()) {
 
 			List<Student> students =
 					sDao.filter(
+							school,
 							Integer.parseInt(entYear),
-							classNum
+							classNum,
+							true
 					);
 
-			request.setAttribute("students", students);
+			request.setAttribute(
+					"students",
+					students
+			);
 
 			// 科目名取得
-			List<Subject> subs = subDao.filter();
+			List<Subject> subs =
+					subDao.filter(school);
 
 			for (Subject s : subs) {
+
 				if (s.getCd().equals(subjectCd)) {
+
 					request.setAttribute(
 							"subjectName",
 							s.getName()
