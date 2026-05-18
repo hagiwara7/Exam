@@ -1,9 +1,15 @@
 package scoremanager.main;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import bean.School;
 import bean.Student;
 import bean.Subject;
 import bean.Test;
+import dao.StudentDao;
+import dao.SubjectDao;
 import dao.TestDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,67 +25,127 @@ public class TestRegistExecuteAction extends Action {
 
         req.setCharacterEncoding("UTF-8");
 
+        // ログイン学校情報
+        School school = (School) req.getSession().getAttribute("school");
+
         // パラメータ取得
-        String schoolCd = req.getParameter("schoolCd");
-        String subjectCd = req.getParameter("subjectCd");
+        String entYearStr = req.getParameter("entYear");
         String classNum = req.getParameter("classNum");
+        String subjectCd = req.getParameter("subjectCd");
+        String noStr = req.getParameter("no");
 
-        int no = Integer.parseInt(
-                req.getParameter("no")
-        );
+        int entYear = Integer.parseInt(entYearStr);
+        int no = Integer.parseInt(noStr);
 
-        String[] studentNos =
-                req.getParameterValues("student_no");
+        // DAO
+        StudentDao studentDao = new StudentDao();
+        SubjectDao subjectDao = new SubjectDao();
+        TestDao testDao = new TestDao();
 
-        String[] points =
-                req.getParameterValues("point");
+        // 科目取得
+        Subject subject = subjectDao.get(subjectCd, school);
 
-        TestDao dao = new TestDao();
+        // 学生一覧取得
+        List<Student> students =
+                studentDao.filter(school, entYear, classNum, true);
 
-        for (int i = 0; i < studentNos.length; i++) {
+        // エラー格納用
+        Map<String, String> errors = new HashMap<>();
 
-            // Bean生成
-            School school = new School();
-            school.setCd(schoolCd);
+        // 入力値保持用
+        Map<String, String> points = new HashMap<>();
 
-            Student student = new Student();
-            student.setNo(studentNos[i]);
+        // -----------------------------
+        // 入力チェック
+        // -----------------------------
+        for (Student student : students) {
 
-            Subject subject = new Subject();
-            subject.setCd(subjectCd);
+            String pointStr =
+                    req.getParameter("point_" + student.getNo());
 
-            // Test生成
-            Test test = new Test();
+            // 入力値保持
+            points.put(student.getNo(), pointStr);
 
-            test.setSchool(school);
-            test.setStudent(student);
-            test.setSubject(subject);
+            // 未入力
+            if (pointStr == null || pointStr.isEmpty()) {
 
-            test.setNo(no);
-            test.setClassNum(classNum);
+                errors.put(
+                        student.getNo(),
+                        "点数を入力してください"
+                );
 
-            // 点数
-            int point = 0;
-
-            if (points[i] != null &&
-                !points[i].isEmpty()) {
-
-                point = Integer.parseInt(points[i]);
+                continue;
             }
 
-            test.setPoint(point);
+            try {
 
-            // 保存
-            dao.save(test);
+                int point = Integer.parseInt(pointStr);
+
+                // 範囲チェック
+                if (point < 0 || point > 100) {
+
+                    errors.put(
+                            student.getNo(),
+                            "0～100の範囲で入力してください"
+                    );
+                }
+
+            } catch (NumberFormatException e) {
+
+                errors.put(
+                        student.getNo(),
+                        "数値で入力してください"
+                );
+            }
         }
 
-        req.setAttribute(
-                "message",
-                "登録しました"
-        );
+        // -----------------------------
+        // エラーがある場合
+        // -----------------------------
+        if (!errors.isEmpty()) {
 
-        req.getRequestDispatcher(
-                "score_create_done.jsp"
-        ).forward(req, res);
+            req.setAttribute("errors", errors);
+            req.setAttribute("points", points);
+
+            req.setAttribute("students", students);
+            req.setAttribute("subject", subject);
+
+            req.setAttribute("entYear", entYear);
+            req.setAttribute("classNum", classNum);
+            req.setAttribute("subjectCd", subjectCd);
+            req.setAttribute("no", no);
+
+            req.setAttribute("f2", true);
+
+            req.getRequestDispatcher("TestRegist.jsp")
+               .forward(req, res);
+
+            return;
+        }
+
+        // -----------------------------
+        // 登録処理
+        // -----------------------------
+        for (Student student : students) {
+
+            String pointStr =
+                    req.getParameter("point_" + student.getNo());
+
+            int point = Integer.parseInt(pointStr);
+
+            Test test = new Test();
+
+            test.setStudent(student);
+            test.setSubject(subject);
+            test.setSchool(school);
+            test.setNo(no);
+            test.setPoint(point);
+
+            testDao.save(test);
+        }
+
+        // 完了画面
+        req.getRequestDispatcher("score_create_done.jsp")
+           .forward(req, res);
     }
 }
