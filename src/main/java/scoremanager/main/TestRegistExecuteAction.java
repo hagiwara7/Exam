@@ -8,6 +8,7 @@ import bean.School;
 import bean.Student;
 import bean.Subject;
 import bean.Test;
+import dao.ClassNumDao;
 import dao.StudentDao;
 import dao.SubjectDao;
 import dao.TestDao;
@@ -41,6 +42,7 @@ public class TestRegistExecuteAction extends Action {
         StudentDao studentDao = new StudentDao();
         SubjectDao subjectDao = new SubjectDao();
         TestDao testDao = new TestDao();
+        ClassNumDao classNumDao = new ClassNumDao();
 
         // 科目取得
         Subject subject = subjectDao.get(subjectCd, school);
@@ -99,33 +101,49 @@ public class TestRegistExecuteAction extends Action {
             }
         }
 
-        // -----------------------------
         // エラーがある場合
-        // -----------------------------
         if (!errors.isEmpty()) {
 
+            // プルダウン再設定
+            req.setAttribute(
+                    "subjectSet",
+                    subjectDao.filter(school)
+            );
+
+            req.setAttribute(
+                    "classNumSet",
+                    classNumDao.filter(school)
+            );
+
+            req.setAttribute(
+                    "entYearSet",
+                    studentDao.filterEntYear(school)
+            );
+
+            // エラー
             req.setAttribute("errors", errors);
+
+            // 入力値保持
             req.setAttribute("points", points);
 
+            // 一覧再表示
             req.setAttribute("students", students);
+
+            // 科目
             req.setAttribute("subject", subject);
 
+            // 選択値保持
             req.setAttribute("entYear", entYear);
             req.setAttribute("classNum", classNum);
             req.setAttribute("subjectCd", subjectCd);
             req.setAttribute("no", no);
-
-            req.setAttribute("f2", true);
 
             req.getRequestDispatcher("TestRegist.jsp")
                .forward(req, res);
 
             return;
         }
-
-        // -----------------------------
         // 登録処理
-        // -----------------------------
         for (Student student : students) {
 
             String pointStr =
