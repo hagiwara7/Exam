@@ -29,7 +29,6 @@
 								</option>
 							</c:forEach>
 						</select>
-						<div class="text-warning">${errors.f1}</div>
 					</div>
 					
 					<div class="col-3">
@@ -42,7 +41,6 @@
 								</option>
 							</c:forEach>
 						</select>
-						<div class="text-warning">${errors.f2}</div>
 					</div>
 
 					<div class="col-4">
@@ -55,14 +53,21 @@
 								</option>
 							</c:forEach>
 						</select>
-						<div class="text-warning">${errors.f3}</div>
 					</div>
 
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary">検索</button>
 					</div>
+					
 				</div>
+										 
+					 <div class="text-warning mx-3 mb-3">${error}
+					 </div>
+					 
 			</form>
+					<div class="mt-2 text-warning">${errors.f4}</div>
+			
+			
 
 			<!-- 学生番号検索 -->
 			<form action="TestListStudentExecute.action" method="get">
@@ -74,12 +79,11 @@
 
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary">検索</button>
-					</div>
-
-					<div class="mt-2 text-warning">${errors.f4}</div>
-				</div>
+					</div>  	
+				</div>					
 			</form>
-
+			
+		
 			<!-- 科目別で絞られた結果を表示 -->
 			<c:if test="${not empty subject}">
 				<div class="mx-3 mb-2">
@@ -87,9 +91,10 @@
 				</div>
 			</c:if>
 
-			<c:if test="${not empty test_list}">
+			
+
+			<c:if test="${not empty testListSubject}">
 				<table class="table table-hover mx-3">
-					<thead>
 						<tr>
 							<th>入学年度</th>
 							<th>クラス</th>
@@ -98,9 +103,9 @@
 							<th>1回</th>
 							<th>2回</th>
 						</tr>
-					</thead>
+					
 						<tbody>
-							<c:forEach var="test" items="${test_list}">
+							<c:forEach var="test" items="${testListSubject}">
 								<tr>
 									<td>${test.entYear}</td>
 									<td>${test.classNum}</td>
@@ -108,15 +113,17 @@
 									<td>${test.studentName}</td>
 									<td>${empty test.points['1'] ? '-' : test.points['1']}</td>
 									<td>${empty test.points['2'] ? '-' : test.points['2']}</td>
-			
 								</tr>
 							</c:forEach>
-							
-							
-						</tbody>
-					</thead>
-				</table>
+				  </table>
 			</c:if>
+			
+			<c:if test="${empty testListSubject && empty error && not empty f1 && not empty f2 && not empty f3}">
+				<div class=" mx-3">
+					学生情報がありませんでした
+				</div>
+			</c:if>
+			
 		</section>
 	</c:param>
 </c:import>

@@ -10,6 +10,7 @@ import bean.Subject;
 import bean.Teacher;
 import bean.TestListSubject;
 import dao.ClassNumDao;
+import dao.StudentDao;
 import dao.SubjectDao;
 import dao.TestListSubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,9 @@ public class TestListSubjectExecuteAction extends Action {
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher) session.getAttribute("user");
 
+        StudentDao studentDao = new StudentDao();
+
+		
 		ClassNumDao classNumDao = new ClassNumDao();
 		SubjectDao subjectDao = new SubjectDao();
 		TestListSubjectDao testListSubjectDao = new TestListSubjectDao();
@@ -54,23 +58,19 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("f2", classNum);
 		req.setAttribute("f3", subjectCd);
 
-		if (entYear == null || entYear.equals("0")) {
-			errors.put("f1", "入学年度を選択してください。");
-		}
 
-		if (classNum == null || classNum.equals("0")) {
-			errors.put("f2", "クラスを選択してください。");
-		}
-
-		if (subjectCd == null || subjectCd.equals("0")) {
-			errors.put("f3", "科目を選択してください。");
-		}
-
-		if (!errors.isEmpty()) {
-			req.setAttribute("errors", errors);
-			req.getRequestDispatcher("test_list.jsp").forward(req, res);
+		if (entYear == null || entYear.equals("0")
+		    || classNum == null || classNum.equals("0")
+			|| subjectCd == null || subjectCd.equals("0")) {
+			req.setAttribute("error", "入学年度とクラスと科目を選択してください");
+			
+			
+			req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
 			return;
 		}
+		
+		
+        
 
 		Subject subject = subjectDao.get(subjectCd, teacher.getSchool());
 
@@ -78,7 +78,7 @@ public class TestListSubjectExecuteAction extends Action {
 				testListSubjectDao.filter(Integer.parseInt(entYear), classNum, subject, teacher.getSchool());
 
 		req.setAttribute("subject", subject);
-		req.setAttribute("test_list", testListSubject);
+		req.setAttribute("testListSubject", testListSubject);
 
 		req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
 	}
