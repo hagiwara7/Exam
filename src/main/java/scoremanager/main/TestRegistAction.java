@@ -112,21 +112,14 @@ public class TestRegistAction extends Action {
 			        "points",
 			        points
 			);
+			Subject subject =
+			        subDao.get(subjectCd, school);
 
-			// 科目名取得
-			List<Subject> subs =
-					subDao.filter(school);
+			request.setAttribute(
+			        "subject",
+			        subject
+			);
 
-			for (Subject s : subs) {
-
-				if (s.getCd().equals(subjectCd)) {
-
-					request.setAttribute(
-							"subjectName",
-							s.getName()
-					);
-				}
-			}
 		}
 
 		request.getRequestDispatcher(
