@@ -56,7 +56,7 @@ public class TestListStudentExecuteAction extends Action {
         req.setAttribute("subjects", subjects);
         req.setAttribute("f4", studentNo);
         req.setAttribute("searchType", "student");
-
+        
         
         if (studentNo == null || studentNo.isEmpty()) {
             errors.put("f4", "このフィールドを入力してください。");
@@ -83,5 +83,6 @@ public class TestListStudentExecuteAction extends Action {
         req.setAttribute("errors", errors);
 
         req.getRequestDispatcher("test_list_student.jsp").forward(req, res);
+        
     }
 }

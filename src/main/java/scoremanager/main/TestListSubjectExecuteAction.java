@@ -2,15 +2,12 @@ package scoremanager.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import bean.Subject;
 import bean.Teacher;
 import bean.TestListSubject;
 import dao.ClassNumDao;
-import dao.StudentDao;
 import dao.SubjectDao;
 import dao.TestListSubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +22,6 @@ public class TestListSubjectExecuteAction extends Action {
 
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher) session.getAttribute("user");
-
-        StudentDao studentDao = new StudentDao();
-
 		
 		ClassNumDao classNumDao = new ClassNumDao();
 		SubjectDao subjectDao = new SubjectDao();
@@ -36,8 +30,6 @@ public class TestListSubjectExecuteAction extends Action {
 		String entYear = req.getParameter("f1");
 		String classNum = req.getParameter("f2");
 		String subjectCd = req.getParameter("f3");
-
-		Map<String, String> errors = new HashMap<>();
 
 		LocalDate today = LocalDate.now();
 		int year = today.getYear();
@@ -57,7 +49,7 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("f1", entYear);
 		req.setAttribute("f2", classNum);
 		req.setAttribute("f3", subjectCd);
-
+		
 
 		if (entYear == null || entYear.equals("0")
 		    || classNum == null || classNum.equals("0")
@@ -69,8 +61,6 @@ public class TestListSubjectExecuteAction extends Action {
 			return;
 		}
 		
-		
-        
 
 		Subject subject = subjectDao.get(subjectCd, teacher.getSchool());
 
@@ -81,5 +71,6 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("testListSubject", testListSubject);
 
 		req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
+		
 	}
 }

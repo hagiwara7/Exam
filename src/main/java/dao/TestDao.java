@@ -223,4 +223,153 @@ public class TestDao extends Dao {
 
         return line == 1;
     }
+        public boolean save(Test test) throws Exception {
+
+    	Connection con = getConnection();
+
+    	PreparedStatement st = null;
+
+    	ResultSet rs = null;
+
+    	int count = 0;
+
+    	try {
+
+    		// 既存確認
+    		st = con.prepareStatement(
+    			"select * from test " +
+    			"where student_no=? " +
+    			"and subject_cd=? " +
+    			"and school_cd=? " +
+    			"and no=?"
+    		);
+
+    		st.setString(
+    			1,
+    			test.getStudent().getNo()
+    		);
+
+    		st.setString(
+    			2,
+    			test.getSubject().getCd()
+    		);
+
+    		st.setString(
+    			3,
+    			test.getSchool().getCd()
+    		);
+
+    		st.setInt(
+    			4,
+    			test.getNo()
+    		);
+
+    		rs = st.executeQuery();
+
+    		boolean exists = rs.next();
+
+    		// close
+    		rs.close();
+    		st.close();
+
+    		// UPDATE
+    		if (exists) {
+
+    			st = con.prepareStatement(
+    				"update test set point=?, class_num=? " +
+    				"where student_no=? " +
+    				"and subject_cd=? " +
+    				"and school_cd=? " +
+    				"and no=?"
+    			);
+
+    			st.setInt(
+    				1,
+    				test.getPoint()
+    			);
+
+    			st.setString(
+    				2,
+    				test.getClassNum()
+    			);
+
+    			st.setString(
+    				3,
+    				test.getStudent().getNo()
+    			);
+
+    			st.setString(
+    				4,
+    				test.getSubject().getCd()
+    			);
+
+    			st.setString(
+    				5,
+    				test.getSchool().getCd()
+    			);
+
+    			st.setInt(
+    				6,
+    				test.getNo()
+    			);
+
+    		} else {
+
+    			// INSERT
+    			st = con.prepareStatement(
+    				"insert into test " +
+    				"(student_no, subject_cd, school_cd, no, point, class_num) " +
+    				"values (?, ?, ?, ?, ?, ?)"
+    			);
+
+    			st.setString(
+    				1,
+    				test.getStudent().getNo()
+    			);
+
+    			st.setString(
+    				2,
+    				test.getSubject().getCd()
+    			);
+
+    			st.setString(
+    				3,
+    				test.getSchool().getCd()
+    			);
+
+    			st.setInt(
+    				4,
+    				test.getNo()
+    			);
+
+    			st.setInt(
+    				5,
+    				test.getPoint()
+    			);
+
+    			st.setString(
+    				6,
+    				test.getClassNum()
+    			);
+    		}
+
+    		count = st.executeUpdate();
+
+    	} finally {
+
+    		if (rs != null) {
+    			rs.close();
+    		}
+
+    		if (st != null) {
+    			st.close();
+    		}
+
+    		if (con != null) {
+    			con.close();
+    		}
+    	}
+
+    	return count > 0;
+    }
 }

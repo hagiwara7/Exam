@@ -62,9 +62,7 @@
 						<button class="btn btn-secondary">検索</button>
 					</div>
 				</div>
-			</form>
-
-
+			</form>			
 
 			<!-- 学生番号で絞る -->
 			<!-- 「検索」ボタンを押したらTestListStudentExecuteAction.javaに飛ぶように設定 -->
@@ -78,7 +76,8 @@
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary">検索</button>
 					</div>
-
+					
+					
 					<div class="mt-2 text-warning">${errors.get("f4")}</div>
 				</div>
 			</form>

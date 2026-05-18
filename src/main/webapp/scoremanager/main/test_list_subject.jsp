@@ -59,14 +59,11 @@
 						<button class="btn btn-secondary">検索</button>
 					</div>
 					
-				</div>
-										 
-					 <div class="text-warning mx-3 mb-3">${error}
+					<div class="mt-2 text-warning">${error}
 					 </div>
+				</div>
 					 
-			</form>
-					<div class="mt-2 text-warning">${errors.f4}</div>
-			
+			</form>			
 			
 
 			<!-- 学生番号検索 -->
@@ -79,13 +76,12 @@
 
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary">検索</button>
-					</div>  	
-				</div>					
+					</div>
+				</div>							
 			</form>
-			
-		
+								
 			<!-- 科目別で絞られた結果を表示 -->
-			<c:if test="${not empty subject}">
+			<c:if test="${not empty subject }">
 				<div class="mx-3 mb-2">
 					科目：${subject.name}
 				</div>
@@ -101,7 +97,7 @@
 							<th>学生番号</th>
 							<th>氏名</th>
 							<th>1回</th>
-							<th>2回</th>
+							<th>2回</th>							
 						</tr>
 					
 						<tbody>
@@ -116,7 +112,7 @@
 								</tr>
 							</c:forEach>
 				  </table>
-			</c:if>
+			</c:if>			
 			
 			<c:if test="${empty testListSubject && empty error && not empty f1 && not empty f2 && not empty f3}">
 				<div class=" mx-3">
@@ -125,5 +121,6 @@
 			</c:if>
 			
 		</section>
+		
 	</c:param>
 </c:import>
