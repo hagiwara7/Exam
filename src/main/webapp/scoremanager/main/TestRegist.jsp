@@ -85,7 +85,7 @@
 			    <input type="hidden" name="no" value="${no}">
 			    <input type="hidden" name="classNum" value="${param.classNum}">
 			    <input type="hidden" name="entYear" value="${param.entYear}">
-			    <input type="hidden" name="schoolCd" value="${schoolCd}">
+			    <input type="hidden" name="schoolCd" value="2000">
 			
 			    <table class="table">
 			
@@ -110,12 +110,12 @@
 			
 			                <td>${student.name}</td>
 			
-			                <td>
-			                    <input type="text"
-			                           name="point"
-			                           class="form-control"
-			                           value="${points[st.index]}">
-			                </td>
+							<td>
+							    <input type="text"
+							           name="point_${student.no}"
+							           class="form-control"
+							           value="${points[student.no]}">
+							</td>
 			            </tr>
 			
 			        </c:forEach>

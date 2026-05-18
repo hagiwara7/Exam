@@ -1,13 +1,17 @@
 package scoremanager.main;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import bean.School;
 import bean.Student;
 import bean.Subject;
+import bean.Test;
 import dao.ClassNumDao;
 import dao.StudentDao;
 import dao.SubjectDao;
+import dao.TestDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tool.Action;
@@ -26,7 +30,7 @@ public class TestRegistAction extends Action {
 
 		School school = new School();
 
-		school.setCd("oom");
+		school.setCd("2000");
 
 		request.getSession().setAttribute(
 		    "school",
@@ -80,6 +84,33 @@ public class TestRegistAction extends Action {
 			request.setAttribute(
 					"students",
 					students
+			);
+			Map<String, Integer> points =
+			        new HashMap<>();
+
+			TestDao tDao = new TestDao();
+
+			for (Student student : students) {
+
+			    Test test = tDao.get(
+			            student.getNo(),
+			            subjectCd,
+			            no,
+			            school
+			    );
+
+			    if (test != null) {
+
+			        points.put(
+			                student.getNo(),
+			                test.getPoint()
+			        );
+			    }
+			}
+
+			request.setAttribute(
+			        "points",
+			        points
 			);
 
 			// 科目名取得
