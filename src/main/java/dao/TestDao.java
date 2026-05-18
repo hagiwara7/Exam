@@ -372,4 +372,47 @@ public class TestDao extends Dao {
 
     	return count > 0;
     }
+        public Test get(
+                String studentNo,
+                String subjectCd,
+                String no,
+                School school
+        ) throws Exception {
+
+            Test test = null;
+
+            Connection con = getConnection();
+
+            String sql =
+                "SELECT * FROM TEST " +
+                "WHERE STUDENT_NO = ? " +
+                "AND SUBJECT_CD = ? " +
+                "AND NO = ? " +
+                "AND SCHOOL_CD = ?";
+
+            PreparedStatement st =
+                con.prepareStatement(sql);
+
+            st.setString(1, studentNo);
+            st.setString(2, subjectCd);
+            st.setInt(3, Integer.parseInt(no));
+            st.setString(4, school.getCd());
+
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+
+                test = new Test();
+
+                test.setPoint(
+                    rs.getInt("POINT")
+                );
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+
+            return test;
+        }
 }
