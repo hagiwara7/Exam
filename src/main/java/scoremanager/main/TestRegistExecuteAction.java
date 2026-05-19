@@ -156,6 +156,7 @@ public class TestRegistExecuteAction extends Action {
             test.setStudent(student);
             test.setSubject(subject);
             test.setSchool(school);
+            test.setClassNum(student.getClassNum());
             test.setNo(no);
             test.setPoint(point);
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import bean.School;
 import bean.Student;
 import bean.Subject;
+import bean.Teacher;
 import bean.Test;
 import dao.ClassNumDao;
 import dao.StudentDao;
@@ -14,6 +15,7 @@ import dao.SubjectDao;
 import dao.TestDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class TestRegistAction extends Action {
@@ -30,26 +32,31 @@ public class TestRegistAction extends Action {
 
 		School school = new School();
 
-		school.setCd("2000");
+		HttpSession session = request.getSession();
+
+		Teacher teacher =
+		        (Teacher) session.getAttribute("user");
+
+		School school1 = teacher.getSchool();
 
 		request.getSession().setAttribute(
 		    "school",
-		    school
+		    school1
 		);
 		// DBからプルダウン用データ取得
 		request.setAttribute(
 				"subjectSet",
-				subDao.filter(school)
+				subDao.filter(school1)
 		);
 
 		request.setAttribute(
 				"classNumSet",
-				cDao.filter(school)
+				cDao.filter(school1)
 		);
 
 		request.setAttribute(
 				"entYearSet",
-				sDao.filterEntYear(school)
+				sDao.filterEntYear(school1)
 		);
 
 		// パラメータ取得
@@ -75,7 +82,7 @@ public class TestRegistAction extends Action {
 
 			List<Student> students =
 					sDao.filter(
-							school,
+							school1,
 							Integer.parseInt(entYear),
 							classNum,
 							true
@@ -96,7 +103,7 @@ public class TestRegistAction extends Action {
 			            student.getNo(),
 			            subjectCd,
 			            no,
-			            school
+			            school1
 			    );
 
 			    if (test != null) {
@@ -113,7 +120,7 @@ public class TestRegistAction extends Action {
 			        points
 			);
 			Subject subject =
-			        subDao.get(subjectCd, school);
+			        subDao.get(subjectCd, school1);
 
 			request.setAttribute(
 			        "subject",
@@ -127,3 +134,4 @@ public class TestRegistAction extends Action {
 		).forward(request, response);
 	}
 }
+
