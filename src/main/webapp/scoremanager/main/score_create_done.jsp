@@ -20,7 +20,7 @@
 				成績登録完了
 			</h2>
 
-			<div class="alert alert-success">
+			<div class="alert alert-success text-center">
 
 				<c:choose>
 
@@ -41,8 +41,13 @@
 				<a href="TestRegist.action"
 					class="btn btn-primary">
 
-					成績登録へ戻る
+					戻る
 
+				</a>
+				<a href="Testlist.action"
+					class="btn btn-primary">
+					
+					成績参照
 				</a>
 
 			</div>
