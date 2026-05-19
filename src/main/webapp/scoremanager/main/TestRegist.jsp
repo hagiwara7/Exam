@@ -27,21 +27,16 @@
                     <div class="col-3">
                         <label>入学年度</label>
 
-                        <select name="entYear" class="form-select">
-
-                            <c:forEach var="year" items="${entYearSet}">
-
-                                <option value="${year}"
-                                    <c:if test="${year == entYear}">
-                                        selected
-                                    </c:if>
-                                >
-                                    ${year}
-                                </option>
-
-                            </c:forEach>
-
-                        </select>
+                       <select name="entYear" class="form-select">
+						    <option value="" selected>--------</option>
+						
+						    <c:forEach var="year" items="${entYearSet}">
+						        <option value="${year}"
+						            <c:if test="${year == entYear}">selected</c:if>>
+						            ${year}
+						        </option>
+						    </c:forEach>
+						</select>
                     </div>
 
                     <!-- クラス -->
@@ -49,7 +44,8 @@
                         <label>クラス</label>
 
                         <select name="classNum" class="form-select">
-
+							<option value="" selected>--------</option>
+							
                             <c:forEach var="num" items="${classNumSet}">
 
                                 <option value="${num}"
@@ -70,6 +66,7 @@
                         <label>科目</label>
 
                         <select name="subjectCd" class="form-select">
+                        	<option value="" selected>--------</option>
 
                             <c:forEach var="sub" items="${subjectSet}">
 
@@ -91,6 +88,7 @@
                         <label>回数</label>
 
                         <select name="no" class="form-select">
+                        <option value="" selected>--------</option>
 
                             <option value="1"
                                 <c:if test="${no == 1}">
@@ -210,6 +208,11 @@
         </c:if>
 
     </section>
+
+    </c:param>
+
+</c:import>
+
 
     </c:param>
 
