@@ -44,7 +44,7 @@
 					戻る
 
 				</a>
-				<a href="Testlist.action"
+				<a href="TestList.action"
 					class="btn btn-primary">
 					
 					成績参照
