@@ -57,9 +57,8 @@ public class TestRegistExecuteAction extends Action {
         // 入力値保持用
         Map<String, String> points = new HashMap<>();
 
-        // -----------------------------
         // 入力チェック
-        // -----------------------------
+        
         for (Student student : students) {
 
             String pointStr =
