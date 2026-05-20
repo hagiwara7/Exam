@@ -30,8 +30,6 @@ public class TestRegistAction extends Action {
 		SubjectDao subDao = new SubjectDao();
 		ClassNumDao cDao = new ClassNumDao();
 
-		School school = new School();
-
 		HttpSession session = request.getSession();
 
 		Teacher teacher =
@@ -43,6 +41,7 @@ public class TestRegistAction extends Action {
 		    "school",
 		    school1
 		);
+
 		// DBからプルダウン用データ取得
 		request.setAttribute(
 				"subjectSet",
@@ -60,25 +59,69 @@ public class TestRegistAction extends Action {
 		);
 
 		// パラメータ取得
-		String entYear = request.getParameter("entYear");
-		String classNum = request.getParameter("classNum");
-		String subjectCd = request.getParameter("subjectCd");
-		String no = request.getParameter("no");
 
+		String entYear =
+		        request.getParameter("entYear");
+
+		String classNum =
+		        request.getParameter("classNum");
+
+		String subjectCd =
+		        request.getParameter("subjectCd");
+
+		String no =
+		        request.getParameter("no");
+
+		// 選択値保持
+		
 		request.setAttribute("entYear", entYear);
 		request.setAttribute("classNum", classNum);
 		request.setAttribute("subjectCd", subjectCd);
 		request.setAttribute("no", no);
 
+
+		// 検索ボタン押下時のみエラー表示
+
+		if (
+		    entYear != null ||
+		    classNum != null ||
+		    subjectCd != null ||
+		    no != null
+		) {
+
+		    if (
+		        entYear == null || entYear.isEmpty() ||
+		        classNum == null || classNum.isEmpty() ||
+		        subjectCd == null || subjectCd.isEmpty() ||
+		        no == null || no.isEmpty()
+		    ) {
+
+		        request.setAttribute(
+		                "selectError",
+		                "入学年度とクラスと科目と回数を選択してください"
+		        );
+
+		        request.getRequestDispatcher(
+		                "TestRegist.jsp"
+		        ).forward(request, response);
+
+		        return;
+		    }
+		}
+
+
 		// 検索実行
-		if (entYear != null &&
+
+		if (
+			entYear != null &&
 			!entYear.isEmpty() &&
 			classNum != null &&
 			!classNum.isEmpty() &&
 			subjectCd != null &&
 			!subjectCd.isEmpty() &&
 			no != null &&
-			!no.isEmpty()) {
+			!no.isEmpty()
+		) {
 
 			List<Student> students =
 					sDao.filter(
@@ -92,6 +135,7 @@ public class TestRegistAction extends Action {
 					"students",
 					students
 			);
+
 			Map<String, Integer> points =
 			        new HashMap<>();
 
@@ -119,6 +163,7 @@ public class TestRegistAction extends Action {
 			        "points",
 			        points
 			);
+
 			Subject subject =
 			        subDao.get(subjectCd, school1);
 
@@ -126,7 +171,6 @@ public class TestRegistAction extends Action {
 			        "subject",
 			        subject
 			);
-
 		}
 
 		request.getRequestDispatcher(
@@ -134,4 +178,3 @@ public class TestRegistAction extends Action {
 		).forward(request, response);
 	}
 }
-
