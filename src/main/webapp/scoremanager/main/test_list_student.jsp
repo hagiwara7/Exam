@@ -5,7 +5,7 @@
 	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<!-- 科目別で得点を表示 -->
+<!-- 学生番号で得点を表示 -->
 <c:import url="/common/base.jsp">
 	<c:param name="title">
 		得点管理システム
@@ -15,11 +15,10 @@
 
 	<c:param name="content">
 		<section class="me-4">
-			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
+			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績一覧（学生）</h2>
 
 			<div class="border mx-3 mb-3 py-2 px-3 rounded" style="max-width: 100%;">
 
-				<!-- 科目情報で絞る -->
 				<form action="TestListSubjectExecute.action" method="get">
 					<div class="row align-items-center mb-2">
 						<div class="col-2 d-flex align-items-center">
@@ -70,7 +69,6 @@
 
 				<div class="border-top my-2"></div>
 
-				<!-- 学生番号で絞る -->
 				<form action="TestListStudentExecute.action" method="get">
 					<div class="row align-items-center">
 						<div class="col-2 d-flex align-items-center">
@@ -94,10 +92,10 @@
 						</div>
 					</div>
 
-					<c:if test="${not empty errors['f4']}">
+					<c:if test="${not empty errors.f4}">
 						<div class="row mt-2">
 							<div class="col-10 offset-2 text-warning">
-								${errors['f4']}
+								${errors.f4}
 							</div>
 						</div>
 					</c:if>
@@ -105,20 +103,20 @@
 
 			</div>
 
-			<c:if test="${empty errors['f4'] && empty f4 && (empty f1 || f1 == 0) && (empty f2 || f2 == '0') && (empty f3 || f3 == '0')}">
+			<c:if test="${empty f4 && empty errors.f4 && empty message}">
 				<div class="mx-3 text-info">
 					科目情報を選択または学生情報を入力して検索ボタンをクリックしてください
 				</div>
 			</c:if>
 
 			<c:if test="${not empty student}">
-				<div class="mx-3 mb-2">
+				<div class="mx-3 mt-2">
 					氏名：${student.name}（${student.no}）
 				</div>
 			</c:if>
 
 			<c:if test="${not empty testListStudent}">
-				<table class="table table-hover mx-3">
+				<table class="table table-hover mx-3 mt-2">
 					<thead>
 						<tr>
 							<th>科目名</th>
@@ -140,9 +138,11 @@
 					</tbody>
 				</table>
 			</c:if>
-
-			<c:if test="${searchType == 'student' && empty errors && empty testListStudent}">
-				<div class="mx-3">成績情報が存在しませんでした。</div>
+			
+			<c:if test="${not empty message}">
+				<div class="mx-3">
+					${message}
+				</div>
 			</c:if>
 
 		</section>
