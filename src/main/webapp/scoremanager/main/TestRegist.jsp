@@ -25,27 +25,46 @@
 
                     <!-- 入学年度 -->
                     <div class="col-3">
+
                         <label>入学年度</label>
 
-                       <select name="entYear" class="form-select">
-						    <option value="" selected>--------</option>
-						
-						    <c:forEach var="year" items="${entYearSet}">
-						        <option value="${year}"
-						            <c:if test="${year == entYear}">selected</c:if>>
-						            ${year}
-						        </option>
-						    </c:forEach>
-						</select>
+                        <select name="entYear" class="form-select">
+
+                            <option value="">--------</option>
+
+                            <c:forEach var="year" items="${entYearSet}">
+
+                                <option value="${year}"
+                                    <c:if test="${year == entYear}">
+                                        selected
+                                    </c:if>
+                                >
+                                    ${year}
+                                </option>
+
+                            </c:forEach>
+
+                        </select>
+                        <!-- エラー -->
+                        <c:if test="${entYearError != null}">
+
+                            <div class="text-danger small mt-1">
+                                ${entYearError}
+                            </div>
+
+                        </c:if>
+
                     </div>
 
                     <!-- クラス -->
                     <div class="col-2">
+
                         <label>クラス</label>
 
                         <select name="classNum" class="form-select">
-							<option value="" selected>--------</option>
-							
+
+                            <option value="">--------</option>
+
                             <c:forEach var="num" items="${classNumSet}">
 
                                 <option value="${num}"
@@ -59,14 +78,26 @@
                             </c:forEach>
 
                         </select>
+
+                        <!-- エラー -->
+                        <c:if test="${classNumError != null}">
+
+                            <div class="text-danger small mt-1">
+                                ${classNumError}
+                            </div>
+
+                        </c:if>
+
                     </div>
 
                     <!-- 科目 -->
                     <div class="col-3">
+
                         <label>科目</label>
 
                         <select name="subjectCd" class="form-select">
-                        	<option value="" selected>--------</option>
+
+                            <option value="">--------</option>
 
                             <c:forEach var="sub" items="${subjectSet}">
 
@@ -81,14 +112,26 @@
                             </c:forEach>
 
                         </select>
+
+                        <!-- エラー -->
+                        <c:if test="${subjectError != null}">
+
+                            <div class="text-danger small mt-1">
+                                ${subjectError}
+                            </div>
+
+                        </c:if>
+
                     </div>
 
                     <!-- 回数 -->
                     <div class="col-2">
+
                         <label>回数</label>
 
                         <select name="no" class="form-select">
-                        <option value="" selected>--------</option>
+
+                            <option value="">--------</option>
 
                             <option value="1"
                                 <c:if test="${no == 1}">
@@ -107,6 +150,16 @@
                             </option>
 
                         </select>
+
+                        <!-- エラー -->
+                        <c:if test="${noError != null}">
+
+                            <div class="text-danger small mt-1">
+                                ${noError}
+                            </div>
+
+                        </c:if>
+
                     </div>
 
                     <!-- 検索 -->
@@ -118,13 +171,26 @@
                         </button>
 
                     </div>
+                    <!-- エラーメッセージ -->
+						<c:if test="${selectError != null}">
+						
+						    <div class="col-12 mt-2">
+						
+						        <div class="text-danger small">
+						
+						            ${selectError}
+						
+						        </div>
+						
+						    </div>
+						
+						</c:if>
 
                 </div>
 
             </div>
 
         </form>
-
 
         <!-- 一覧 -->
         <c:if test="${students != null}">
