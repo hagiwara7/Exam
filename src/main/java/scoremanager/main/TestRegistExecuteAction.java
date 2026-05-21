@@ -58,7 +58,6 @@ public class TestRegistExecuteAction extends Action {
         Map<String, String> points = new HashMap<>();
 
         // 入力チェック
-        
         for (Student student : students) {
 
             String pointStr =
@@ -67,14 +66,8 @@ public class TestRegistExecuteAction extends Action {
             // 入力値保持
             points.put(student.getNo(), pointStr);
 
-            // 未入力
-            if (pointStr == null || pointStr.isEmpty()) {
-
-                errors.put(
-                        student.getNo(),
-                        "点数を入力してください"
-                );
-
+            // 未入力はスキップ
+            if (pointStr == null || pointStr.trim().isEmpty()) {
                 continue;
             }
 
@@ -142,11 +135,17 @@ public class TestRegistExecuteAction extends Action {
 
             return;
         }
+
         // 登録処理
         for (Student student : students) {
 
             String pointStr =
                     req.getParameter("point_" + student.getNo());
+
+            // 空欄なら登録しない
+            if (pointStr == null || pointStr.trim().isEmpty()) {
+                continue;
+            }
 
             int point = Integer.parseInt(pointStr);
 
@@ -167,3 +166,4 @@ public class TestRegistExecuteAction extends Action {
            .forward(req, res);
     }
 }
+
