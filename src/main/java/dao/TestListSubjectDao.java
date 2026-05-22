@@ -13,6 +13,7 @@ import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
 
+	// 成績一覧取得用SQL
 	private String baseSql =
 			"SELECT "
 			+ "t.subject_cd, "
@@ -33,14 +34,16 @@ public class TestListSubjectDao extends Dao {
 			+ "ORDER BY student_no";
 
 	private List<TestListSubject> postFilter(ResultSet rs) throws Exception {
+
 		List<TestListSubject> list = new ArrayList<>();
 
-		
 		while (rs.next()) {
+
 			String studentNo = rs.getString("student_no");
 
 			TestListSubject target = null;
 
+			// 同じ学生番号のデータを探す
 			for (TestListSubject testSub : list) {
 				if (testSub.getStudentNo().equals(studentNo)) {
 					target = testSub;
@@ -48,26 +51,36 @@ public class TestListSubjectDao extends Dao {
 				}
 			}
 
+			// 学生情報を新規作成
 			if (target == null) {
+
 				target = new TestListSubject();
+
 				target.setEntYear(rs.getInt("ent_year"));
 				target.setClassNum(rs.getString("class_num"));
 				target.setStudentNo(rs.getString("student_no"));
 				target.setStudentName(rs.getString("student_name"));
+
 				list.add(target);
 			}
-			
-			int no =rs.getInt("test_no");
+
+			// 点数情報をMapに追加
+			int no = rs.getInt("test_no");
 			int point = rs.getInt("test_point");
 
 			target.getPoints().put(String.valueOf(no), point);
-			
 		}
 
 		return list;
 	}
 
-	public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
+	// 条件に一致する成績一覧を取得
+	public List<TestListSubject> filter(
+			int entYear,
+			String classNum,
+			Subject subject,
+			School school) throws Exception {
+
 		List<TestListSubject> list = new ArrayList<>();
 
 		Connection con = getConnection();
@@ -75,7 +88,9 @@ public class TestListSubjectDao extends Dao {
 		ResultSet rs = null;
 
 		try {
+
 			st = con.prepareStatement(baseSql);
+
 			st.setInt(1, entYear);
 			st.setString(2, classNum);
 			st.setString(3, subject.getCd());
@@ -83,12 +98,15 @@ public class TestListSubjectDao extends Dao {
 
 			rs = st.executeQuery();
 
+			// 検索結果をリスト化
 			list = this.postFilter(rs);
 
 		} catch (Exception e) {
+
 			throw e;
 
 		} finally {
+
 			if (rs != null) {
 				try {
 					rs.close();
@@ -104,7 +122,7 @@ public class TestListSubjectDao extends Dao {
 					throw sqle;
 				}
 			}
-
+			
 			if (con != null) {
 				try {
 					con.close();

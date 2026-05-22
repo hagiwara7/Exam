@@ -24,13 +24,15 @@ public class TestListAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         LocalDate today = LocalDate.now();
-        int year = today.getYear();
+        int year = today.getYear(); //今年の年数を取得
 
+        //今年から10年前までの年数を取得
         List<Integer> entYearSet = new ArrayList<>();
         for (int i = year - 10; i <= year; i++) {
             entYearSet.add(i);
         }
 
+        //検索項目のデータを取得(クラス番号,科目)
         ClassNumDao classNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
 
@@ -39,11 +41,13 @@ public class TestListAction extends Action {
 
         Map<String, String> errors = new HashMap<>();
 
+        //取得した値をセット
         req.setAttribute("ent_year_set", entYearSet);
         req.setAttribute("class_num_set", classNumSet);
         req.setAttribute("subjects", subjects);
         req.setAttribute("errors", errors);
-
+        
+        //JSPへフォワード
         req.getRequestDispatcher("test_list.jsp").forward(req, res);
     }
 }

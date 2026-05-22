@@ -280,5 +280,49 @@ public class ClassNumDao extends Dao {
 			return false;
 		}
 	}
+	public boolean save1(ClassNum c) throws Exception {
 
+		Connection con = getConnection();
+
+		PreparedStatement st = con.prepareStatement(
+				"insert into class_num(class_num, school_cd) values(?, ?)"
+				);
+
+		st.setString(1, c.getClass_num());
+		st.setString(2, c.getSchool().getCd());
+
+		int count = st.executeUpdate();
+
+		st.close();
+		con.close();
+
+		return count > 0;
+	}
+
+	public boolean update(
+			String oldClassNum,
+			ClassNum c
+			) throws Exception {
+
+		Connection con = getConnection();
+
+		PreparedStatement st = con.prepareStatement(
+				"update class_num "
+				+ "set class_num=? "
+				+ "where class_num=? "
+				+ "and school_cd=?"
+				);
+
+		st.setString(1, c.getClass_num());
+		st.setString(2, oldClassNum);
+		st.setString(3, c.getSchool().getCd());
+
+		int count = st.executeUpdate();
+
+		st.close();
+		con.close();
+
+		return count > 0;
+	}
+	
 }
