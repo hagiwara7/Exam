@@ -6,7 +6,8 @@ public class Subject implements Serializable {
 	private String cd;
 	private String name;
 	private School school;
- 
+	
+	// ゲッターセッター
 	public String getCd() {
 		return cd;
 	}
