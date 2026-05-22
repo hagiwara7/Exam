@@ -173,8 +173,6 @@ public class TestRegistAction extends Action {
 			);
 		}
 
-		request.getRequestDispatcher(
-				"TestRegist.jsp"
-		).forward(request, response);
+		request.getRequestDispatcher("test_regist.jsp").forward(request, response);
 	}
 }
